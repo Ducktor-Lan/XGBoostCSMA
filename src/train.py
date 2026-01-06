@@ -23,7 +23,7 @@ for p in [save_path, results_save_path, shap_save_path]:
         os.makedirs(p)
 
 def run_experiment():
-    dataset_name = 'T2'
+    dataset_name = 'T1'
     
     # 超参数搜索空间
     a_values = np.arange(5, 16, 1)    # mu

@@ -5,7 +5,7 @@ class XGBoostCSMA(XGBClassifier):
     """
     XGBoost-CSMA 模型封装类。
     """
-    def __init__(self, a=10, c=0.5, loss_type='cross_entropy', **kwargs):
+    def __init__(self, a=10, c=0.5, loss_type='weighted_cross_entropy', **kwargs):
         """
         Args:
             a (float): CSMA 参数 mu (slope). 默认值 10 (经验值).
