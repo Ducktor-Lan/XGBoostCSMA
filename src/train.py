@@ -4,6 +4,7 @@ import os
 import matplotlib.pyplot as plt
 import shap
 from sklearn.model_selection import train_test_split
+import pickle
 
 from model import XGBoostCSMA
 import utils
@@ -39,13 +40,17 @@ def run_experiment():
 
     features, labels = utils.load_and_preprocess_data(csv_path)
     
-    # 数据切分 (70% Train, 15% Valid, 15% Test)
-    X_train_full, X_test, y_train_full, y_test = train_test_split(
-        features, labels, test_size=0.15, random_state=2024, stratify=labels
-    )
-    X_train, X_valid, y_train, y_valid = train_test_split(
-        X_train_full, y_train_full, test_size=0.1765, random_state=2024, stratify=y_train_full
-    )
+    # 数据切分
+    with open(dataset_path + '{}.pickle'.format(dataset_name),'rb') as f:
+        shuffle_index = pickle.load(f)
+    train_ratio = 0.7
+    valid_ratio = 0.15
+    train_index = shuffle_index[:int(features.shape[0] * train_ratio)]
+    valid_index = shuffle_index[int(features.shape[0] * train_ratio):int(features.shape[0] * (train_ratio + valid_ratio))]
+    test_index = shuffle_index[int(features.shape[0] * (train_ratio + valid_ratio)):]
+    X_train,y_train = features.iloc[train_index],labels.iloc[train_index]
+    X_valid,y_valid = features.iloc[valid_index],labels.iloc[valid_index]
+    X_test,y_test = features.iloc[test_index],labels.iloc[test_index]
     
     print(f"Data shapes - Train: {X_train.shape}, Valid: {X_valid.shape}, Test: {X_test.shape}")
 
@@ -58,7 +63,7 @@ def run_experiment():
     for a in a_values:
         gmean_results[a] = {}
         for c in c_values:
-            model = XGBoostCSMA(a=a, c=c, eval_metric='auc', early_stopping_rounds=20)
+            model = XGBoostCSMA(a=a, c=c, eval_metric=['auc'], early_stopping_rounds=20)
             
             model.fit(
                 X_train, y_train,
@@ -69,6 +74,8 @@ def run_experiment():
             y_valid_pred = np.rint(model.predict_proba(X_valid)[:, 1])
             score = utils.g_mean_score(y_valid, y_valid_pred)
             gmean_results[a][c] = score
+
+            print(f"G-mean: {score:.4f} (a={a}, c={c:.1f})")
             
             if score > best_score:
                 best_score = score

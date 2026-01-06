@@ -35,8 +35,9 @@ def load_and_preprocess_data(file_path):
     # 缺失值填充
     imputer = SimpleImputer(missing_values=np.nan, strategy='mean')
     features_imputed = imputer.fit_transform(features)
+    features = pd.DataFrame(features_imputed,columns=feature_names)
     
-    return pd.DataFrame(features_imputed, columns=feature_names), labels
+    return features, labels
 
 def g_mean_score(label, pred):
     tpr = recall_score(label, pred)

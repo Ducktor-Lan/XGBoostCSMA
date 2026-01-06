@@ -18,7 +18,7 @@ class XGBoostCSMA(XGBClassifier):
         self.loss_type = loss_type
         
         default_params = {
-            'max_depth': 7,       
+            'max_depth': 7,
             'learning_rate': 0.1,
             'n_estimators': 100,
             'min_child_weight': 3,
@@ -33,14 +33,8 @@ class XGBoostCSMA(XGBClassifier):
         
         default_params.update(kwargs)
         
-        # 初始化父类
         super().__init__(**default_params)
 
     def fit(self, X, y, **kwargs):
-        """
-        重写 fit 方法，在训练开始前动态绑定 CSMA objective。
-        """
-        # 生成带有当前 a, c 参数的自定义目标函数
         self.objective = get_csma_objective(self.a, self.c, self.loss_type)
-        
         return super().fit(X, y, **kwargs)
