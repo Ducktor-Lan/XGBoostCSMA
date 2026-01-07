@@ -2,6 +2,13 @@
 
 Code implementation for "Confidence-scaled margin adaptation boosting for interpretable financial distress prediction".
 
+## Reproducibility Package Information
+
+- **Date of assembly**: 2025-01-07  
+- **Author**: Xingyu Lan  
+- **Contact**: xingyu-lan@outlook.com
+
+
 ## Data and Code Availability
 
 The data that support the findings of this study are available from the China Stock Market & Accounting Research (CSMAR) database. Restrictions apply to the availability of these data, which were used under license for the current study and are not publicly available. The data are proprietary and subject to commercial copyright protection. However, data are available from the authors upon reasonable request and with permission of CSMAR, or can be obtained directly by third parties via the CSMAR website ([https://data.csmar.com/](https://data.csmar.com/)) subject to subscription fees or institutional access.
@@ -26,10 +33,12 @@ conda activate ease
 A comprehensive guide to the files and directories in this repository.
 
 *   **`dataset/`**
-    *   Contains the raw dataset files (e.g., `T1.csv`, `T2.csv`). These are expected to be in CSV format with features and a binary label.
+    *   This directory serves as a placeholder for the datasets used in the experiments.
+    *   The raw data files are proprietary and cannot be redistributed due to licensing restrictions.
+    *   Authorized users can obtain the data directly from the CSMAR database and place the processed CSV files in this directory following the instructions in `dataset/README.md`.
 
 *   **`modular_experiment/`**
-    *   *Framework for running large-scale, configurable experiments.*
+    *   *Framework for running large-scale, configurable benchmarks.*
     *   `config.py`: Central configuration file. Defines the list of datasets, classifiers (`METHODS`), imbalance handling methods (`IMB_METHODS`), and parameters like `SEED`.
     *   `data.py`: Handles data loading and preprocessing. Contains functions to split data into train, validation, and test sets.
     *   `main.py`: The main entry point script. Iterates through all configurations defined in `config.py`, trains models, and saves results.
@@ -49,9 +58,6 @@ A comprehensive guide to the files and directories in this repository.
     *   `Figure6/`: Subdirectory for storing generated figures (e.g., SHAP summary plots).
     *   `gmean_matrix_Mfull/`: Subdirectory for storing performance matrices (e.g., G-mean scores across different ratios).
 
-*   **`results/`**
-    *   Default output directory for experiment results (CSVs) and logs.
-
 ## Usage
 
 ### 1. Modular Experiment (Recommended)
@@ -65,7 +71,7 @@ To run the comprehensive experiment suite (multiple datasets, methods, and sampl
     python -m modular_experiment.main
     ```
 
-### 3. Loss Functions
+### 2. Loss Functions
 
 The framework supports two underlying loss functions for the CSMA (Confidence-Scaled Margin Adaptation) wrapper:
 
@@ -80,7 +86,7 @@ The framework supports two underlying loss functions for the CSMA (Confidence-Sc
 
 CSMA acts as a probability mapping wrapper that can be combined with these base losses. It maps the original probability (0.5 threshold) into a dynamic interval scaled by the confidence margin.
 
-### 4. Standalone Training
+### 3. Standalone Training
 
 To run a specific training session for the CSMA-Boosting model (default on T1 dataset):
 
