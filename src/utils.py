@@ -12,7 +12,7 @@ except ImportError:
 
 def load_and_preprocess_data(file_path):
     try:
-        # 尝试读取 GBK 编码
+        # Attempt to read with GBK encoding
         data = pd.read_csv(file_path, encoding='gbk')
     except UnicodeDecodeError:
         data = pd.read_csv(file_path, encoding='utf-8')
@@ -20,19 +20,10 @@ def load_and_preprocess_data(file_path):
     features = data.iloc[:, :-1]
     labels = data.iloc[:, -1]
     
-    # 1. 显式移除已知的 ID 类列
-    drop_cols = ['code', 'year', 'name', '证券代码', '证券简称', '简称', 'Stkcd']
+    drop_cols = ['code', 'year', 'name']
     features = features.drop([c for c in drop_cols if c in features.columns], axis=1)
-    
-    features = features.select_dtypes(include=[np.number])
-    
-    # 检查是否误删了所有列
-    if features.shape[1] == 0:
-        raise ValueError("错误：预处理后没有剩余的数值特征列。请检查 CSV 文件格式是否正确读取。")
-
     feature_names = list(features.columns)
     
-    # 缺失值填充
     imputer = SimpleImputer(missing_values=np.nan, strategy='mean')
     features_imputed = imputer.fit_transform(features)
     features = pd.DataFrame(features_imputed,columns=feature_names)

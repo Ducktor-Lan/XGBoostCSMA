@@ -3,15 +3,15 @@ from csma_loss import get_csma_objective
 
 class XGBoostCSMA(XGBClassifier):
     """
-    XGBoost-CSMA 模型封装类。
+    XGBoost-CSMA Model Wrapper Class.
     """
     def __init__(self, a=10, c=0.5, loss_type='weighted_cross_entropy', **kwargs):
         """
         Args:
-            a (float): CSMA 参数 mu (slope). 默认值 10 (经验值).
-            c (float): CSMA 参数 v (margin). 默认值 0.5 (经验值).
-            loss_type (str): 基础损失函数类型 'cross_entropy' 或 'weighted_cross_entropy'.
-            **kwargs: 其他 XGBoost 参数，可覆盖默认值。
+            a (float): CSMA parameter mu (slope). Default is 10 (empirical value).
+            c (float): CSMA parameter v (margin). Default is 0.5 (empirical value).
+            loss_type (str): Base loss function type 'cross_entropy' or 'weighted_cross_entropy'.
+            **kwargs: Other XGBoost parameters, overriding defaults.
         """
         self.a = a
         self.c = c

@@ -6,7 +6,7 @@ def sigmoid(x):
 
 def get_csma_objective(a, c, loss_type='cross_entropy', weights=None):
     """
-    生成 CSMA (Confidence-Scaled Margin Adaptation) 目标函数。
+    Generate CSMA (Confidence-Scaled Margin Adaptation) objective function.
     
     Args:
         a (float): CSMA slope parameter.
@@ -18,17 +18,17 @@ def get_csma_objective(a, c, loss_type='cross_entropy', weights=None):
         weights = {'pos': 0.8, 'neg': 0.2}
 
     def csma_loss_func(y_pred, y_true):
-        # 1. 计算基础 Loss (li)
+        # 1. Calculate base Loss (li)
         p = sigmoid(y_pred)
         
         if loss_type == 'weighted_cross_entropy':
             # -w_pos * t * log(p) - w_neg * (1-t) * log(1-p)
             li = -(weights['pos'] * y_true * np.log(p)) - (weights['neg'] * (1 - y_true) * np.log(1 - p))
         else:
-            # 标准交叉熵
+            # Standard cross entropy
             li = -(y_true * np.log(p)) - ((1 - y_true) * np.log(1 - p))
         
-        # 2. 计算动态权重 w(li)
+        # 2. Calculate dynamic weight w(li)
         # Weight = 1 / (1 + exp(mu * (v - li)))
         weight = 1.0 / (1.0 + np.exp(a * (c - li)))
         
@@ -36,8 +36,8 @@ def get_csma_objective(a, c, loss_type='cross_entropy', weights=None):
 
     def objective(y_true, y_pred):
         partial_loss = lambda x: csma_loss_func(x, y_true)
-        grad = derivative(partial_loss, y_pred, n=1, dx=1e-6)
-        hess = derivative(partial_loss, y_pred, n=2, dx=1e-6)
+        grad = derivative(partial_loss, y_pred, n=1, dx=1e-3)
+        hess = derivative(partial_loss, y_pred, n=2, dx=1e-3)
         return grad, hess
 
     return objective
