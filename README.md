@@ -9,7 +9,7 @@ Code implementation for "Confidence-scaled margin adaptation boosting for interp
 - **Contact**: xingyu-lan@outlook.com
 
 
-## Data and Code Availability
+## Data Availability
 
 The data that support the findings of this study are available from the China Stock Market & Accounting Research (CSMAR) database. Restrictions apply to the availability of these data, which were used under license for the current study and are not publicly available. The data are proprietary and subject to commercial copyright protection. However, data are available from the authors upon reasonable request and with permission of CSMAR, or can be obtained directly by third parties via the CSMAR website ([https://data.csmar.com/](https://data.csmar.com/)) subject to subscription fees or institutional access.
 
